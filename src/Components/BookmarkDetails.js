@@ -12,13 +12,12 @@ function BookmarkDetails() {
   useEffect(() => {
     axios.get(`${API}/bookmarks/${index}`).then((res) => {
       setBookmark(res.data);
-      navigate("/");
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDelete = () =>
     axios.delete(`${API}/bookmarks/${index}`).then((res) => {
-      console.log(res);
+      navigate("/");
     });
 
   return (

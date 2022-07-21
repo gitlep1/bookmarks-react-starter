@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const API = process.env.REACT_APP_API_URL;
 
 function BookmarkEditForm() {
   let { index } = useParams();
+  const navigate = useNavigate();
 
   const [bookmark, setBookmark] = useState({
     name: "",
@@ -20,11 +24,20 @@ function BookmarkEditForm() {
     setBookmark({ ...bookmark, isFavorite: !bookmark.isFavorite });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    axios.get(`${API}/bookmarks/${index}`).then((res) => {
+      setBookmark(res.data);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    axios.put(`${API}/bookmarks/${index}`).then((res) => {
+      navigate("/bookmarks");
+    });
   };
+
   return (
     <div className="Edit">
       <form onSubmit={handleSubmit}>
