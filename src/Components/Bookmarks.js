@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Bookmark from "./Bookmark";
+import axios from "axios";
+
+const API = process.env.REACT_APP_API_URL;
 
 function Bookmarks() {
-  const [bookmarks] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${API}/bookmarks`).then((res) => {
+      console.log(res.data);
+      setBookmarks(res.data);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="Bookmarks">
       <section>

@@ -1,12 +1,26 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const API = process.env.REACT_APP_API_URL;
 
 function BookmarkDetails() {
-  const [bookmark] = useState([]);
+  const [bookmark, setBookmark] = useState([]);
   let { index } = useParams();
+  const navigate = useNavigate();
 
-  useEffect(() => {}, []);
-  const handleDelete = () => {};
+  useEffect(() => {
+    axios.get(`${API}/bookmarks/${index}`).then((res) => {
+      setBookmark(res.data);
+      navigate("/");
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleDelete = () =>
+    axios.delete(`${API}/bookmarks/${index}`).then((res) => {
+      console.log(res);
+    });
+
   return (
     <article>
       <h3>
